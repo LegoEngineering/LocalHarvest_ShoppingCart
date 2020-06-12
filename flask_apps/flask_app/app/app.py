@@ -97,5 +97,27 @@ def login():
     else:
         return jsonify({'message': 'Account does not exist'}), 404
 
+@app.route('/api/product', methods=['GET', 'POST', 'PATCH'])
+def product():
+    products = mongo.db.products
+
+    if request.method == 'GET':
+        data = request.args.get('Scribbles')
+        if data is None:
+            return jsonify({'message': 'Product does not exist'}), 200
+        else:
+            return jsonify({'value': data}), 200
+
+    elif request.method == 'POST':
+        data = request.get_json()
+        product = products.find_one({"productname": data['productname']})
+        if product is None:
+            result = products.insert_one(data)
+            return jsonify({'message': 'Product has been added!'}), 200
+        else:
+            return jsonify({'message': 'Product already exists'}), 400
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
+
+

@@ -6,6 +6,7 @@ import Login from './views/Login.vue'
 import Account from './views/Account.vue'
 import CreateAccount from './views/CreateAccount.vue'
 import ChangePassword from './views/ChangePassword.vue'
+import Inventory from './views/Inventory.vue'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/inventory',
+      name: 'inventory',
+      component: Inventory
     },
     {
       path: '/changePassword',

@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <AccountEntry headerText="login" buttonText="login" @accountEntrySubmit="login" />
-    <router-link to="/createAccount">Ceate Account</router-link>
+    <router-link to="/createAccount">Create Account</router-link>
     <label>{{message}}</label>
   </div>
 </template>
