@@ -102,7 +102,39 @@ def product():
     products = mongo.db.products
 
     if request.method == 'GET':
-        data = request.args.get('Scribbles')
+        
+        if request.args is None:
+            allProducts = list(mongo.db.products)
+            return jsonify(allProducts), 200
+            
+        agr = []
+        if 'productname' in request.args:
+            prodName = request.args.get('productname')
+            prodNameFilter = {'$match': {
+                "productname": prodName
+            }}
+            agr.append(prodNameFilter)
+        if 'productweight' in request.args:
+            prodWeight = request.args.get('productweight')
+            prodWeightFilter = {'$match': {
+                "productweight": prodWeight
+            }}
+            agr.append(prodWeightFilter)
+        if 'productprice' in request.args:
+            prodPrice = request.args.get('productprice')
+            prodPriceFilter = {'$match': {
+                "productprice": prodPrice
+            }}
+            agr.append(prodPriceFilter)
+        if 'productsupply' in request.args:
+            prodSupply = request.args.get('productsupply')
+            prodSupplyFilter = {'$match': {
+                "productsupply": prodSupply
+            }}
+            agr.append(prodSupplyFilter)
+        productsFiltered = list(mongo.db.products.aggregate(agr))
+        return jsonify(productsFiltered), 200
+
         if data is None:
             return jsonify({'message': 'Product does not exist'}), 200
         else:

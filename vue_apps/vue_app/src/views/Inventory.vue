@@ -9,6 +9,14 @@
       @searchSubmitEvent="searchProduct"
     />
     <label>{{message}}</label>
+
+  <ul>
+    <li v-for="item in items" v-bind:key="item.productname">{{ item }}</li>
+  <v-card max-width="400">
+  
+  </v-card>
+  </ul>
+
   </div>
 </template>
 
@@ -20,7 +28,8 @@ export default {
   name: "inventory",
   data() {
     return {
-      message: ""
+      message: "",
+      items: []
     };
   },
   components: {
@@ -31,6 +40,7 @@ export default {
      console.log(input)
       try {
         let result = await axios.post("/api/product", input);
+
         this.message = result.data.message
       } catch (e) {
         if (e.response.data.message) {
@@ -41,11 +51,11 @@ export default {
       }
     },
     searchProduct: async function(input) {
-     console.log(input)
       try {
-        let result = await axios.get("/api/product", {params: {Scribbles: input}, headers:{}})
-        this.message = result.data.value
+        let result = await axios.get("/api/product", {params: {productname: input.productname}, headers:{}})
         console.log(result)
+        this.message = result.data
+        this.items = result.data
       } catch (e) {
         if (e.response.data.message) {
           this.message = e.response.data.message;

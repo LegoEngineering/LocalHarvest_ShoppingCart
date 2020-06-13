@@ -7,6 +7,7 @@ import Account from './views/Account.vue'
 import CreateAccount from './views/CreateAccount.vue'
 import ChangePassword from './views/ChangePassword.vue'
 import Inventory from './views/Inventory.vue'
+import Shop from './views/Shop.vue'
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/Shop',
+      name: 'shop',
+      component: Shop,
     },
   ]
 })
