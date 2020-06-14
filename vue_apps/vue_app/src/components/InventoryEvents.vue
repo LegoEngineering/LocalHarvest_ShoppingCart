@@ -43,14 +43,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-#account {
-  width: 500px;
-  border: 1px solid #cccccc;
-  background-color: #ffffff;
-  margin: auto;
-  margin-top: 200px;
-  padding: 20px;
-}
-</style>

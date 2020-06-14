@@ -1,11 +1,13 @@
 <template>
-<div id="shoponline">
-  <ul>
-    <li v-for="item in items" v-bind:key="item.productname">{{ item }}</li>
-    <v-card max-width="400">
-    </v-card>
-  </ul>
+  <div>
+    <div class="productcard" v-for="(item, index) in items" v-bind:key="item._id">
+        {{item.productname}}
+        <button type="button" @click="addProductToCart(index)">Add to Cart</button>
+
+          
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -20,11 +22,9 @@ export default {
   },
   methods: {
     getAllProducts: async function() {
-      console.log("warning yo")
       try {
         let result = await axios.get("/api/product")
-        this.productname = result.data.value
-        this.items = result.data
+        this.items= result.data
         console.log(result)
       } catch (e) {
         if (e.response.data.message) {
@@ -33,7 +33,13 @@ export default {
           this.message = "Unable to search for a product at this time";
         }
       }
+    },
+    addProductToCart: async function(index) {
+      this.message = "Item has been added!"
+      console.log(index)
+      console.log(this.items[index])
     }
+
   },
   mounted() {
     this.getAllProducts();
@@ -42,3 +48,13 @@ export default {
     
 </script>
 
+<style scoped>
+.productcard {
+  border: 1px solid #000000;
+  background-color: #a89f9f;
+  margin: auto;
+  margin-top: 200px;
+  padding: 20px;
+  }
+
+</style>
