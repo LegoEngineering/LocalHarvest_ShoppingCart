@@ -1,10 +1,15 @@
 <template>
   <div>
-    <div class="productcard" v-for="(item, index) in items" v-bind:key="item._id">
-        {{item.productname}}
-        <button type="button" @click="addProductToCart(index)">Add to Cart</button>
+    <div>
+    <b-card order-variant="light" class="text-center" id="productcard" v-for="(item, index) in items" v-bind:key="item._id">
+      
+        <div>{{item.productname}}</div>
+        <div>{{item.productweight}}</div>
+        <div>{{item.productprice}}</div>
+        <div>{{item.productsupply}}</div>
 
-          
+        <button type="button" @click="addProductToCart(index)">Add to Cart</button> 
+    </b-card>
     </div>
   </div>
 
@@ -49,12 +54,12 @@ export default {
 </script>
 
 <style scoped>
-.productcard {
-  border: 1px solid #000000;
-  background-color: #a89f9f;
-  margin: auto;
-  margin-top: 200px;
-  padding: 20px;
+#productcard {
+  width: 200px;
+  margin-left: 40px;
+  margin-top: 20px;
+  padding: 10px;
+  float: left;
   }
 
 </style>
