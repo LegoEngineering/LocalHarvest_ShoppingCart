@@ -1,22 +1,27 @@
 <template>
-  <div class="card">
-    <b-card order-variant="light" class="text-center" id="productcard">
+    <b-card order-variant="light" class="card" id="productcard">
       
         <div>{{item.productname}}</div>
         <div>{{item.productweight}}</div>
         <div>{{item.productprice}}</div>
         <div>{{item.productsupply}}</div>
 
-        <button type="button">Add to Cart</button> 
+        <button type="button" @click="cardbutton">{{ cardButtonText }}</button> 
     </b-card>
-  </div>
 </template>
 
 <script>
 export default {
   name: 'card',
   props: {
-    item: {}
+    item: {},
+    cardButtonText: String
+  },
+  methods: {
+    cardbutton() {
+      console.log(this.item)
+      this.$emit("cardButtonEvent");
+    }
   }
 }
 </script>
@@ -28,6 +33,6 @@ export default {
   margin-top: 20px;
   padding: 10px;
   float: left;
+  text-align: center;
   }
-
 </style>

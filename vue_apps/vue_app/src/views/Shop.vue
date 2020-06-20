@@ -1,15 +1,10 @@
 <template>
-  <div>
-    <div>
-    <b-card order-variant="light" class="text-center" id="productcard" v-for="(item, index) in items" v-bind:key="item._id">
-      
-        <div>{{item.productname}}</div>
-        <div>{{item.productweight}}</div>
-        <div>{{item.productprice}}</div>
-        <div>{{item.productsupply}}</div>
-
-        <button type="button" @click="addProductToCart(index)">Add to Cart</button> 
-    </b-card>
+  <div class="shoponline">
+    <div v-for="(item, index) in items" v-bind:key="item._id"> 
+      <Card 
+      :item = item 
+      cardButtonText="Add to Cart"
+      @cardButtonEvent="addProductToCart(index)"/>
     </div>
   </div>
 
@@ -17,6 +12,7 @@
 
 <script>
 import axios from "axios";
+import Card from '@/components/Card.vue';
 export default {
   name: "shoponline",
   data() {
@@ -48,6 +44,9 @@ export default {
   },
   mounted() {
     this.getAllProducts();
+  },
+  components: {
+    Card
   }
 }
     
