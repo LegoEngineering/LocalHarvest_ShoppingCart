@@ -34,7 +34,7 @@ export default {
       console.log(this.input)
       this.$emit("searchSubmitEvent", this.input);
     }
-  },
+    },
   props: {
     addButtonText: String,
     addHeaderText: String,

@@ -49,20 +49,6 @@ export default {
           this.message = "Unable to add a product at this time";
         }
       }
-    },
-    searchProduct: async function(input) {
-      try {
-        let result = await axios.get("/api/product", {params: {productname: input.productname}, headers:{}})
-        console.log(result)
-        this.message = result.data
-        this.items = result.data
-      } catch (e) {
-        if (e.response.data.message) {
-          this.message = e.response.data.message;
-        } else {
-          this.message = "Unable to search for a product at this time";
-        }
-      }
     }
   }
 };

@@ -8,13 +8,21 @@
       <router-link to="/account">Account Overview</router-link>|
       <router-link to="/inventory">Inventory</router-link>|
       <router-link to="/shop">Shop Online</router-link>
+      <SideBar />
     </div>
     <router-view />
+
   </div>
 </template>
 
 <script>
-export default {};
+import SideBar from '@/components/SideBar.vue';
+export default {
+    components: {
+    SideBar
+  }
+};
+
 </script>
 
 <style>

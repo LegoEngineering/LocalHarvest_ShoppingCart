@@ -1,5 +1,6 @@
 <template>
   <div class="shoponline">
+    <SearchBar @searchSubmitEvent="displaySearchResults" />
     <div v-for="(item, index) in items" v-bind:key="item._id"> 
       <Card 
       :item = item 
@@ -12,7 +13,9 @@
 
 <script>
 import axios from "axios";
+import SearchBar from '@/components/SearchBar.vue';
 import Card from '@/components/Card.vue';
+import { EventBus } from '@/event-bus.js';
 export default {
   name: "shoponline",
   data() {
@@ -31,7 +34,7 @@ export default {
         if (e.response.data.message) {
           this.message = e.response.data.message;
         } else {
-          this.message = "Unable to search for a product at this time";
+          this.message = "Unable to display products at this time";
         }
       }
     },
@@ -39,6 +42,12 @@ export default {
       this.message = "Item has been added!"
       console.log(index)
       console.log(this.items[index])
+      var newCartItem = this.items[index]
+      EventBus.$emit("addProductToCartEvent", newCartItem);
+    },
+    displaySearchResults: async function(searchResult) {
+      console.log(searchResult)
+      this.items = searchResult
     }
 
   },
@@ -46,7 +55,8 @@ export default {
     this.getAllProducts();
   },
   components: {
-    Card
+    Card,
+    SearchBar
   }
 }
     
