@@ -1,6 +1,6 @@
 <template>
   <div class="shoponline">
-    <manageProducts @searchSubmitEvent="displaySearchResults" />
+    <manageProducts purpose="searchBar" @searchSubmitEvent="displaySearchResults" />
     <div v-for="(item, index) in items" v-bind:key="item._id"> 
       <Card 
       :item = item 

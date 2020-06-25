@@ -14,7 +14,7 @@
     <b-form-group label="Add Tags to Product:">
       <b-form-checkbox-group
         id="checkbox-group-1"
-        v-model="selected"
+        v-model="input.selected"
         :options="options"
         name="flavour-1"
       ></b-form-checkbox-group>
@@ -34,8 +34,8 @@ export default {
         productweight: "",
         productprice: "",
         productsupply: "",
+        selected: []
       },
-      selected: [], // Must be an array reference!
       options: []
     };
   },
