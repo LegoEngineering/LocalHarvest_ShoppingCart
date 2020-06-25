@@ -1,6 +1,6 @@
 <template>
   <div class="shoponline">
-    <SearchBar @searchSubmitEvent="displaySearchResults" />
+    <manageProducts @searchSubmitEvent="displaySearchResults" />
     <div v-for="(item, index) in items" v-bind:key="item._id"> 
       <Card 
       :item = item 
@@ -13,7 +13,7 @@
 
 <script>
 import axios from "axios";
-import SearchBar from '@/components/SearchBar.vue';
+import manageProducts from '@/components/manageProducts.vue';
 import Card from '@/components/Card.vue';
 import { EventBus } from '@/event-bus.js';
 export default {
@@ -22,6 +22,7 @@ export default {
     return {
       message: "",
       items: []
+
     }
   },
   methods: {
@@ -29,7 +30,6 @@ export default {
       try {
         let result = await axios.get("/api/product")
         this.items= result.data
-        console.log(result)
       } catch (e) {
         if (e.response.data.message) {
           this.message = e.response.data.message;
@@ -40,13 +40,10 @@ export default {
     },
     addProductToCart: async function(index) {
       this.message = "Item has been added!"
-      console.log(index)
-      console.log(this.items[index])
       var newCartItem = this.items[index]
       EventBus.$emit("addProductToCartEvent", newCartItem);
     },
     displaySearchResults: async function(searchResult) {
-      console.log(searchResult)
       this.items = searchResult
     }
 
@@ -56,7 +53,7 @@ export default {
   },
   components: {
     Card,
-    SearchBar
+    manageProducts
   }
 }
     

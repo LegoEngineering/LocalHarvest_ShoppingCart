@@ -6,7 +6,7 @@
       <router-link :to="{name: 'login', params: {next: '/'}}">Login</router-link>|
       <router-link to="/createAccount">Create Account</router-link>|
       <router-link to="/account">Account Overview</router-link>|
-      <router-link to="/inventory">Inventory</router-link>|
+      <router-link to="/manageProducts">Inventory</router-link>|
       <router-link to="/shop">Shop Online</router-link>
       <SideBar />
     </div>

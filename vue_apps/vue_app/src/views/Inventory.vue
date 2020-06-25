@@ -1,55 +1,22 @@
 <template>
-  <div id="inventory">
-    <InventoryEvents
-      addHeaderText="Add Product"
-      addButtonText="add"
-      @addSubmitEvent="addNewProduct"
-      searchHeaderText="Search for a Product"
-      searchButtonText="search"
-      @searchSubmitEvent="searchProduct"
-    />
-    <label>{{message}}</label>
-
-  <ul>
-    <li v-for="item in items" v-bind:key="item.productname">{{ item }}</li>
-  <v-card max-width="400">
-  
-  </v-card>
-  </ul>
-
-  </div>
+<div>
+    <manageProducts />
+</div>
 </template>
 
 
 <script>
-import axios from "axios";
-import InventoryEvents from "@/components/InventoryEvents.vue";
+import manageProducts from "@/components/manageProducts.vue";
 export default {
-  name: "inventory",
+  name: "Inventory",
   data() {
     return {
-      message: "",
-      items: []
     };
   },
   components: {
-    InventoryEvents
+    ProductEntry
   },
-  methods: {
-    addNewProduct: async function(input) {
-     console.log(input)
-      try {
-        let result = await axios.post("/api/product", input);
-
-        this.message = result.data.message
-      } catch (e) {
-        if (e.response.data.message) {
-          this.message = e.response.data.message;
-        } else {
-          this.message = "Unable to add a product at this time";
-        }
-      }
-    }
+  methods: {}
   }
 };
 </script>

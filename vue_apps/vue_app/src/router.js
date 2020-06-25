@@ -6,7 +6,7 @@ import Login from './views/Login.vue'
 import Account from './views/Account.vue'
 import CreateAccount from './views/CreateAccount.vue'
 import ChangePassword from './views/ChangePassword.vue'
-import Inventory from './views/Inventory.vue'
+import manageProducts from './components/manageProducts.vue'
 import Shop from './views/Shop.vue'
 
 Vue.use(Router)
@@ -46,9 +46,9 @@ const router = new Router({
       }
     },
     {
-      path: '/inventory',
-      name: 'inventory',
-      component: Inventory
+      path: '/manageProducts',
+      name: 'manageProducts',
+      component: manageProducts
     },
     {
       path: '/changePassword',
