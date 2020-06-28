@@ -6,8 +6,8 @@
     <b-sidebar id="sidebar-right" title="My Cart" right shadow>
       <div class="px-3 py-2" v-for="(item) in items" v-bind:key="item._id">
           <div>
-            {{item.product.productname}}
-            {{item.quantity}}
+            <b-table striped hover :fields="fields" :items="items">
+            <template v-slot:cell()="data">{{ data.item }}</template>
           </div>
       </div>
     </b-sidebar>
@@ -22,6 +22,11 @@ export default {
   name: "sidebar",
   data() {
     return {
+      fields: [
+        { key: "product.productname", label: "productname" },
+        { key: "product.quantity", label: "quantity" },
+        { key: "product.productprice", label: "productprice" }
+      ],
       message: "",
       items: []
     }
@@ -30,15 +35,16 @@ export default {
     Shop
   },
   mounted() {
-    EventBus.$on('addProductToCartEvent', (newCartItem) => {
-      if (this.items.some(item => item.product === newCartItem)){
-        item.quantity++
-        console.log(item);    
-        console.log(quantity);    
-      } else {
-        var quantity = 1
-        this.items.push({"product": newCartItem, "quantity": quantity});
-      }
+    EventBus.$on('addProductToCart', (cartItemIncludeValue) => {
+      console.log(cartItemIncludeValue)
+        this.items.push({"product": cartItemIncludeValue.cartItem, "quantity": cartItemIncludeValue.quantity});
+    }),
+    EventBus.$on('changeProductQuantity', (cartItemIncludeValue) => {
+      console.log(cartItemIncludeValue)
+        const i = this.items.findIndex(item => cartItemIncludeValue.cartItem===item.product)
+          console.log(i)
+          console.log(cartItemIncludeValue.cartItem)
+        this.items[i].quantity=cartItemIncludeValue.quantity
     });
   }
 }

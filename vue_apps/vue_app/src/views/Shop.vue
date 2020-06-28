@@ -5,7 +5,11 @@
       <Card 
       :item = item 
       cardButtonText="Add to Cart"
-      @cardButtonEvent="addProductToCart(index)"/>
+      @addProductToCart="addToCart(index, $event)"
+      @productQuantityIsOne= "changeQuantity(index, $event)"
+      @removeProductFromCart = "changeQuantity(index, $event)"
+      @changeProductQuantity = "changeQuantity(index, $event)"
+      />
     </div>
   </div>
 
@@ -22,7 +26,6 @@ export default {
     return {
       message: "",
       items: []
-
     }
   },
   methods: {
@@ -38,10 +41,15 @@ export default {
         }
       }
     },
-    addProductToCart: async function(index) {
+    //quantity and index are confused. quantity is displaying index instead of value need to pass in both
+    addToCart: async function(index, value) {
       this.message = "Item has been added!"
-      var newCartItem = this.items[index]
-      EventBus.$emit("addProductToCartEvent", newCartItem);
+      console.log("new item")
+      EventBus.$emit("addProductToCart", {"cartItem": this.items[index], "quantity": value});
+    },
+    changeQuantity: async function(index, value) {
+      console.log("change quantity")
+      EventBus.$emit("changeProductQuantity", {"cartItem": this.items[index], "quantity": value});
     },
     displaySearchResults: async function(searchResult) {
       this.items = searchResult

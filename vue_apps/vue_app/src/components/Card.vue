@@ -6,23 +6,53 @@
         <div>{{item.productprice}}</div>
         <div>{{item.productsupply}}</div>
 
-        <button type="button" @click="cardbutton">{{ cardButtonText }}</button> 
+        <label for="sb-inline">{{ cardButtonText }}</label>
+        <b-form-spinbutton 
+          id="sb-inline"
+          v-model="value" 
+          @change="cardbutton" 
+          inline 
+          min="0">
+        </b-form-spinbutton>
     </b-card>
 </template>
 
 <script>
 export default {
   name: 'card',
+  data() {
+      return {
+        value: 0,
+        isAdded: 0,
+      }
+    },
   props: {
     item: {},
     cardButtonText: String
   },
   methods: {
     cardbutton() {
-      console.log(this.item)
-      this.$emit("cardButtonEvent");
+      if (this.value ==1) {
+        if(this.isAdded ==0) {
+          this.isAdded = 1
+          console.log("product was added for the first time")
+          this.$emit("addProductToCart", this.value);
+        } else {
+          console.log("product quantity is one again")
+          this.$emit("productQuantityIsOne", this.value);
+        }
+      } else if (this.value==0) {
+          if(this.isAdded ==1) {
+            this.isAdded = 0
+            console.log("product was removed")
+            this.$emit("removeProductFromCart", this.value);
+          }
+      } else {
+        console.log("product quantity was changed")
+        this.$emit("changeProductQuantity", this.value);
     }
   }
+}
 }
 </script>
 
