@@ -41,15 +41,16 @@ export default {
         }
       }
     },
-    //quantity and index are confused. quantity is displaying index instead of value need to pass in both
     addToCart: async function(index, value) {
       this.message = "Item has been added!"
-      console.log("new item")
       EventBus.$emit("addProductToCart", {"cartItem": this.items[index], "quantity": value});
     },
     changeQuantity: async function(index, value) {
-      console.log("change quantity")
-      EventBus.$emit("changeProductQuantity", {"cartItem": this.items[index], "quantity": value});
+      if(value != 0){
+        EventBus.$emit("changeProductQuantity", {"cartItem": this.items[index], "quantity": value});
+      } else {
+        EventBus.$emit("removeProductFromCart", {"cartItem": this.items[index], "quantity": value});
+      }
     },
     displaySearchResults: async function(searchResult) {
       this.items = searchResult

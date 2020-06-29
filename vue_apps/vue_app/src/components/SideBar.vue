@@ -4,11 +4,13 @@
       <b-icon-cart2></b-icon-cart2> 
     </b-button>
     <b-sidebar id="sidebar-right" title="My Cart" right shadow>
-      <div class="px-3 py-2" v-for="(item) in items" v-bind:key="item._id">
+      <div class="px-3 py-2">
           <div>
-            <b-table striped hover :fields="fields" :items="items">
-            <template v-slot:cell()="data">{{ data.item }}</template>
+            <b-table striped hover :fields="fields" :items="items" v-bind:key="tableVersion">
+            <template v-slot:cell()="data">{{ data.value }}</template>
           </div>
+          <button v-if="items[0]" type="button" @click="checkoutCart">Checkout</button>
+          <button v-if="items[0]" type="button" @click="viewCart">View Cart</button>
       </div>
     </b-sidebar>
   </div>
@@ -23,29 +25,65 @@ export default {
   data() {
     return {
       fields: [
-        { key: "product.productname", label: "productname" },
-        { key: "product.quantity", label: "quantity" },
-        { key: "product.productprice", label: "productprice" }
+        { key: "product.productname", label:""},
+        { key: "quantity", label:""},
+        { key: "product.productprice", label:""}
       ],
       message: "",
-      items: []
+      items: [],
+      tableVersion: 0
     }
   },  
   components: {
     Shop
   },
+  methods: {
+    checkoutCart: async function(items) {
+      console.log(this.items)
+      const carto = {"cartitems": this.items}
+      try {
+        let result = await axios.post("/api/cart", carto);
+        console.log(result)
+        this.message = result.data.message
+      } catch (e) {
+        if (e.response.data.message) {
+          this.message = e.response.data.message;
+        } else {
+          this.message = "Unable to checkout at this time";
+        }
+      }
+    },
+    viewCart: async function() {
+      try {
+        let getresult = await axios.get("/api/cart");
+        console.log(getresult)
+        //this.message = result.data.message
+      } catch (e) {
+        if (e.response.data.message) {
+          this.message = e.response.data.message;
+        } else {
+          this.message = "Unable to retrieve at this time";
+        }
+      }
+    }  
+  },
+
   mounted() {
     EventBus.$on('addProductToCart', (cartItemIncludeValue) => {
-      console.log(cartItemIncludeValue)
         this.items.push({"product": cartItemIncludeValue.cartItem, "quantity": cartItemIncludeValue.quantity});
     }),
     EventBus.$on('changeProductQuantity', (cartItemIncludeValue) => {
-      console.log(cartItemIncludeValue)
         const i = this.items.findIndex(item => cartItemIncludeValue.cartItem===item.product)
-          console.log(i)
-          console.log(cartItemIncludeValue.cartItem)
         this.items[i].quantity=cartItemIncludeValue.quantity
+    }),
+    EventBus.$on('removeProductFromCart', (cartItemIncludeValue) => {
+        const i = this.items.findIndex(item => cartItemIncludeValue.cartItem===item.product)
+        if (i > -1) {
+          this.items.splice(i, 1);
+        }
+        this.tableVersion++
     });
+
   }
 }
 </script>

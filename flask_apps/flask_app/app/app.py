@@ -100,13 +100,12 @@ def login():
 @app.route('/api/product', methods=['GET', 'POST', 'PATCH'])
 def product():
     products = mongo.db.products
-
     if request.method == 'GET':
-        
+        if products is None:
+            return jsonify({'message': 'Product does not exist'}), 200
         if request.args is None:
             allProducts = list(mongo.db.products)
             return jsonify(allProducts), 200
-            
         agr = []
         if 'productname' in request.args:
             prodName = request.args.get('productname')
@@ -135,11 +134,6 @@ def product():
         productsFiltered = list(mongo.db.products.aggregate(agr))
         return jsonify(productsFiltered), 200
 
-        if data is None:
-            return jsonify({'message': 'Product does not exist'}), 200
-        else:
-            return jsonify({'value': data}), 200
-
     elif request.method == 'POST':
         data = request.get_json()
         product = products.find_one({"productname": data['productname']})
@@ -149,7 +143,16 @@ def product():
         else:
             return jsonify({'message': 'Product already exists'}), 400
 
+@app.route('/api/cart', methods=['GET', 'POST', 'PATCH'])
+def cart():
+    carts = mongo.db.carts
+    if request.method == 'GET':
+        return jsonify({'message': 'get request'}), 200
+    elif request.method == 'POST':
+        data = request.get_json()
+        result = carts.insert(data)
+        hi = list(mongo.db.carts)
+        return jsonify(hi), 200
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
-
