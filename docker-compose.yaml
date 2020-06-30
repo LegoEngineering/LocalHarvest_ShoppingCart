@@ -6,7 +6,7 @@ services:
 
   flask_backend:
     build: ./flask_apps/flask_app/
-    depends_on:
+    links:
       - mongo
     container_name: flask_backend
     ports:
@@ -16,7 +16,7 @@ services:
       - FLASK_DEBUG=1
       - LC_ALL=C.UTF-8
       - LANG=C.UTF-8
-      - MONGODB_URI=mongodb://mongo:27017
+      - MONGODB_URI=mongodb://mongo:27017/backend
 
   vue_frontend: 
     build: ./vue_apps/

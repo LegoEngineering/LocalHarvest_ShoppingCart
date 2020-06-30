@@ -149,10 +149,13 @@ def cart():
     if request.method == 'GET':
         return jsonify({'message': 'get request'}), 200
     elif request.method == 'POST':
+        agr = []
         data = request.get_json()
-        result = carts.insert(data)
-        hi = list(mongo.db.carts)
-        return jsonify(hi), 200
+        result = carts.insert_one(data)
+        # print(result.acknowledged)
+        # print(mongo.db.list_collection_names())
+        mycarts = list(mongo.db.carts.aggregate(agr))
+        return jsonify(mycarts), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
