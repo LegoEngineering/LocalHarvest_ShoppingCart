@@ -68,7 +68,6 @@ def getUser(users):
 @app.route('/api/user', methods=['GET', 'POST', 'PATCH'])
 def user():
     users = mongo.db.users
-
     if request.method == 'GET':
         return getUser(users)
     elif request.method == 'POST':
@@ -82,6 +81,8 @@ def user():
             return jsonify({'token': token}), 200
         else:
             return jsonify({'message': 'Account already exists'}), 400
+    else:
+        return jsonify({'message': 'Method not allowed'}), 403
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -134,7 +135,6 @@ def product():
                 agr.append(prodSupplyFilter)
             productsFiltered = list(mongo.db.products.aggregate(agr))
             return jsonify(productsFiltered), 200
-
     elif request.method == 'POST':
         data = request.get_json()
         product = products.find_one({"productname": data['productname']})
@@ -143,6 +143,8 @@ def product():
             return jsonify({'message': 'Product has been added!'}), 200
         else:
             return jsonify({'message': 'Product already exists'}), 400
+    else:
+        return jsonify({'message': 'Method not allowed'}), 403
 
 @app.route('/api/cart', methods=['GET', 'POST', 'PATCH'])
 def cart():
@@ -157,6 +159,7 @@ def cart():
         # print(mongo.db.list_collection_names())
         mycarts = list(mongo.db.carts.aggregate(agr))
         return jsonify(mycarts), 200
-
+    else:
+        return jsonify({'message': 'Method not allowed'}), 403
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
