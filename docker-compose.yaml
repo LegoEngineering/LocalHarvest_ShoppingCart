@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+
+  flask_backend:
+    build: ./flask_apps/flask_app/
+    depends_on:
+      - mongo
+    container_name: flask_backend
+    ports:
+      - 5000:5000
+    environment: 
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+      - MONGODB_URI=mongodb://mongo:27017
+
+  vue_frontend: 
+    build: ./vue_apps/
+    links:
+      - flask_backend
+    container_name: vue_frontend
+    ports:
+      - 8080:80
