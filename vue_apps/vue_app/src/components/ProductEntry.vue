@@ -47,6 +47,7 @@ export default {
     searchsubmit() {
       console.log(this.input)
       this.$emit("searchSubmitEvent", this.input);
+
     },
     modifysubmit() {
       console.log(this.input)

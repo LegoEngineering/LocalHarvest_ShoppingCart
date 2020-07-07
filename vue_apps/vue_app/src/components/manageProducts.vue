@@ -24,6 +24,7 @@
 <script>
 import axios from "axios";
 import ProductEntry from "@/components/ProductEntry.vue";
+import { EventBus } from '@/event-bus.js';
 export default {
   name: "manageProducts",
   data() {
@@ -38,7 +39,6 @@ export default {
   },
   methods: {
     addNewProduct: async function(input) {
-      console.log(input)
       try {
         let result = await axios.post("/api/product", input);
         this.message = result.data.message
@@ -49,6 +49,7 @@ export default {
           this.message = "Unable to add a product at this time";
         }
       }
+      EventBus.$emit("shopInventoryUpdate");
     },
     searchProduct: async function(input) {
       try {

@@ -11,12 +11,19 @@ export default {
   name: "Inventory",
   data() {
     return {
+      inventoryVersion: 0
     };
   },
   components: {
     ProductEntry
   },
-  methods: {}
+  methods: {
+
+  },
+  mounted() {
+    EventBus.$on('shopInventoryUpdate', () => {
+      this.inventoryVersion++
+    })
   }
-};
+  };
 </script>

@@ -1,18 +1,19 @@
 <template>
   <div class="shoponline">
-    <manageProducts purpose="searchBar" @searchSubmitEvent="displaySearchResults" />
-    <div v-for="(item, index) in items" v-bind:key="item._id"> 
-      <Card 
-      :item = item 
-      cardButtonText="Add to Cart"
-      @addProductToCart="addToCart(index, $event)"
-      @productQuantityIsOne= "changeQuantity(index, $event)"
-      @removeProductFromCart = "changeQuantity(index, $event)"
-      @changeProductQuantity = "changeQuantity(index, $event)"
-      />
+    <manageProducts purpose="searchBar" @searchSubmitEvent="displaySearchResults"/>
+    <div v-bind:key="shopVersion">
+      <div v-for="(item, index) in items" v-bind:key="item._id"> 
+          <Card 
+          :item = item 
+          cardButtonText="Add to Cart"
+          @addProductToCart="addToCart(index, $event)"
+          @productQuantityIsOne= "changeQuantity(index, $event)"
+          @removeProductFromCart = "changeQuantity(index, $event)"
+          @changeProductQuantity = "changeQuantity(index, $event)"
+          />
+      </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -25,7 +26,8 @@ export default {
   data() {
     return {
       message: "",
-      items: []
+      items: [],
+      shopVersion: 0
     }
   },
   methods: {
@@ -54,10 +56,15 @@ export default {
     },
     displaySearchResults: async function(searchResult) {
       this.items = searchResult
-    }
+    },
 
   },
   mounted() {
+    EventBus.$on('shopInventoryUpdate', () => {
+        this.shopVersion++
+        console.log("rerender should happen")
+        console.log(this.shopVersion)
+    })
     this.getAllProducts();
   },
   components: {
