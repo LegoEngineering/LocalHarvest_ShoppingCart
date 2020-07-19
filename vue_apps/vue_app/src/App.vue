@@ -7,7 +7,8 @@
       <router-link to="/createAccount">Create Account</router-link>|
       <router-link to="/account">Account Overview</router-link>|
       <router-link to="/manageProducts">Inventory</router-link>|
-      <router-link to="/shop">Shop Online</router-link>
+      <router-link to="/shop">Shop Online</router-link>|
+      <router-link to="/checkout">Checkout</router-link>
       <SideBar />
     </div>
     <router-view />

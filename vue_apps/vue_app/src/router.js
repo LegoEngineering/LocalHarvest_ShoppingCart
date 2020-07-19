@@ -8,6 +8,7 @@ import CreateAccount from './views/CreateAccount.vue'
 import ChangePassword from './views/ChangePassword.vue'
 import manageProducts from './components/manageProducts.vue'
 import Shop from './views/Shop.vue'
+import Checkout from './views/Checkout.vue'
 
 Vue.use(Router)
 
@@ -62,6 +63,11 @@ const router = new Router({
       path: '/Shop',
       name: 'shop',
       component: Shop,
+    },
+    {
+      path: '/Checkout',
+      name: 'checkout',
+      component: Checkout,
     }
   ]
 })

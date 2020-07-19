@@ -2,15 +2,10 @@
   <div class="shoponline">
     <manageProducts purpose="searchBar" @searchSubmitEvent="displaySearchResults"/>
     <div v-bind:key="shopVersion">
-      <div v-for="(item, index) in items" v-bind:key="item._id"> 
+      <div v-for="item in items" v-bind:key="item._id"> 
           <Card 
           :item = item 
-          cardButtonText="Add to Cart"
-          @addProductToCart="addToCart(index, $event)"
-          @productQuantityIsOne= "changeQuantity(index, $event)"
-          @removeProductFromCart = "changeQuantity(index, $event)"
-          @changeProductQuantity = "changeQuantity(index, $event)"
-          />
+          cardButtonText="Add to Cart"/>
       </div>
     </div>
   </div>
@@ -27,7 +22,8 @@ export default {
     return {
       message: "",
       items: [],
-      shopVersion: 0
+      shopVersion: 0,
+      cart: []
     }
   },
   methods: {
@@ -43,21 +39,19 @@ export default {
         }
       }
     },
-    addToCart: async function(index, value) {
-      this.message = "Item has been added!"
-      EventBus.$emit("addProductToCart", {"cartItem": this.items[index], "quantity": value});
-    },
-    changeQuantity: async function(index, value) {
-      if(value != 0){
-        EventBus.$emit("changeProductQuantity", {"cartItem": this.items[index], "quantity": value});
-      } else {
-        EventBus.$emit("removeProductFromCart", {"cartItem": this.items[index], "quantity": value});
-      }
-    },
     displaySearchResults: async function(searchResult) {
       this.items = searchResult
     },
-
+    getPastCart: async function() {
+      if(!localStorage.getItem('tempCart')){
+      console.log('no such cart')
+        } else {
+      this.cart = JSON.parse(localStorage.getItem('tempCart'));
+      this.cart.forEach(function(item) {
+      EventBus.$emit("getPastCartEvent", {"cartItem": item.product, "quantity": item.quantity});
+      });
+    }
+    }
   },
   mounted() {
     EventBus.$on('shopInventoryUpdate', () => {
@@ -66,6 +60,8 @@ export default {
         console.log(this.shopVersion)
     })
     this.getAllProducts();
+    //this.getPastCart();
+
   },
   components: {
     Card,

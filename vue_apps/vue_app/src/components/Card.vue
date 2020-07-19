@@ -9,7 +9,7 @@
         <label for="sb-inline">{{ cardButtonText }}</label>
         <b-form-spinbutton 
           id="sb-inline"
-          v-model="value" 
+          v-model="quantity" 
           @change="cardbutton" 
           inline 
           min="0">
@@ -18,11 +18,12 @@
 </template>
 
 <script>
+import { EventBus } from '@/event-bus.js';
 export default {
   name: 'card',
   data() {
       return {
-        value: 0,
+        quantity: 0,
         isAdded: 0,
       }
     },
@@ -32,23 +33,45 @@ export default {
   },
   methods: {
     cardbutton() {
-      if (this.value ==1) {
+      if (this.quantity ==1) {
         if(this.isAdded ==0) {
           this.isAdded = 1
-          this.$emit("addProductToCart", this.value);
+          EventBus.$emit("addProductToCart", {"cartItem": this.item, "quantity": this.quantity});
         } else {
-          this.$emit("productQuantityIsOne", this.value);
+          EventBus.$emit("changeProductQuantity", {"cartItem": this.item, "quantity": this.quantity});
         }
-      } else if (this.value==0) {
+      } else if (this.quantity==0) {
           if(this.isAdded ==1) {
             this.isAdded = 0
-            this.$emit("removeProductFromCart", this.value);
+            EventBus.$emit("removeProductFromCart", {"cartItem": this.item, "quantity": this.quantity});
           }
       } else {
-        this.$emit("changeProductQuantity", this.value);
+        EventBus.$emit("changeProductQuantity", {"cartItem": this.item, "quantity": this.quantity});
+      }
     }
+  },
+  mounted() {
+        EventBus.$on('addProductToCart', (cartItemIncludeQuantity) => {
+        if(cartItemIncludeQuantity.product == this.item) {
+          this.quantity = cartItemIncludeQuantity.quantity
+        }
+        }),
+        EventBus.$on('changeProductQuantity', (cartItemIncludeQuantity) => {
+        if(cartItemIncludeQuantity.product == this.item) {
+          this.quantity = cartItemIncludeQuantity.quantity
+        }
+        }),
+        EventBus.$on('removeProductFromCart', (cartItemIncludeQuantity) => {
+        if(cartItemIncludeQuantity.product == this.item) {
+          this.quantity = cartItemIncludeQuantity.quantity
+        }
+        })
+        EventBus.$on('getPastCartEvent', (cartItemIncludeQuantity) => {
+        if(cartItemIncludeQuantity.cartItem == this.item) {
+          this.quantity = cartItemIncludeQuantity.quantity
+        }
+        })
   }
-}
 }
 </script>
 
